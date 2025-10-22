@@ -8,48 +8,68 @@ def validate_ip(ip):
     except ValueError:
         return False
 
-def get_ip_info(ip=None):
-    # If no IP given, API returns info about current public IP
+def get_ip_info_ipwho(ip=None):
     url = f"https://ipwho.is/{ip}" if ip else "https://ipwho.is/"
-
     try:
         response = requests.get(url)
         response.raise_for_status()
         data = response.json()
-
         if not data.get("success", False):
-            print(f"Invalid IP address or data not found for: {ip}")
-            return
+            return None
+        return {
+            "ip": data.get("ip"),
+            "ipv6": data.get("ipv6"),
+            "country": data.get("country"),
+            "city": data.get("city"),
+            "isp": data.get("connection", {}).get("isp"),
+            "asn": data.get("connection", {}).get("asn"),
+            "latitude": data.get("latitude"),
+            "longitude": data.get("longitude"),
+        }
+    except requests.RequestException:
+        return None
 
-        # Extract info
-        ipv4 = data.get("ip")
-        ipv6 = data.get("ipv6")
-        country = data.get("country")
-        city = data.get("city")
-        isp = data.get("connection", {}).get("isp")
-        asn = data.get("connection", {}).get("asn")
-        latitude = data.get("latitude")
-        longitude = data.get("longitude")
+def get_ip_info_ipapi(ip=None):
+    url = f"https://ipapi.co/{ip}/json/" if ip else "https://ipapi.co/json/"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+        if "error" in data:
+            return None
+        return {
+            "ip": data.get("ip"),
+            "ipv6": data.get("ipv6", None),
+            "country": data.get("country_name"),
+            "city": data.get("city"),
+            "isp": data.get("org"),
+            "asn": data.get("asn"),
+            "latitude": data.get("latitude"),
+            "longitude": data.get("longitude"),
+        }
+    except requests.RequestException:
+        return None
 
-        # Display nicely
-        print("\n--- IP Information ---")
-        print("IP Address:", ipv4)
-        print("IPv6 Address:", ipv6 if ipv6 else "Not available")
-        print(f"Location: {city}, {country}")
-        print("ISP:", isp)
-        print("ASN:", asn)
-        print(f"Coordinates: {latitude}, {longitude}")
-
-    except requests.RequestException as e:
-        print("Error contacting the IP info service:", e)
+def print_ip_info(source_name, info):
+    if not info:
+        print(f"{source_name}: Failed to retrieve data.")
+        return
+    print(f"\n--- {source_name} ---")
+    print(f"IP Address: {info['ip']}")
+    print(f"IPv6 Address: {info['ipv6'] if info['ipv6'] else 'Not available'}")
+    print(f"Location: {info['city']}, {info['country']}")
+    print(f"ISP: {info['isp']}")
+    print(f"ASN: {info['asn']}")
+    print(f"Coordinates: {info['latitude']}, {info['longitude']}")
 
 if __name__ == "__main__":
-    ip_input = input("Enter an IP address (leave blank for your current IP): ").strip()
+    fixed_ip = "223.25.20.86"
 
-    if ip_input:
-        if validate_ip(ip_input):
-            get_ip_info(ip_input)
-        else:
-            print("Invalid IP address format.")
+    if not validate_ip(fixed_ip):
+        print("Invalid IP address format.")
     else:
-        get_ip_info()
+        info_ipwho = get_ip_info_ipwho(fixed_ip)
+        info_ipapi = get_ip_info_ipapi(fixed_ip)
+
+        print_ip_info("ipwho.is", info_ipwho)
+        print_ip_info("ipapi.co", info_ipapi)

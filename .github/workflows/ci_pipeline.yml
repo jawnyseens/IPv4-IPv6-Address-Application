@@ -32,9 +32,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
 
-    # Step 4: Run the tests using discover
+# Step 4: Run the tests using discover
     - name: Run Test Suite
-      # Use the 'discover' command for reliability. 
-      # The '-v' flag provides verbose output.
+      # Explicitly add the current directory to the Python path
+      env:
+        PYTHONPATH: .
       run: |
         python -m unittest discover -v

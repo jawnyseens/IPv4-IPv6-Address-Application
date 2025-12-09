@@ -3,7 +3,7 @@ import ipaddress
 from datetime import datetime
 
 # ===============================
-# Utility Functions (No Change)
+# Utility Functions 
 # ===============================
 
 def validate_ip(ip):
@@ -24,7 +24,7 @@ def fetch_json(url):
         return None
 
 # ===============================
-# Data Collection from APIs (No Change)
+# Data Collection from APIs 
 # ===============================
 
 def get_ipwho(ip=None):
@@ -83,7 +83,7 @@ def get_ipinfo(ip=None):
     }
 
 # ===============================
-# Analysis Functions (No Change)
+# Analysis Functions 
 # ===============================
 
 def analyze_consistency(results):
@@ -147,7 +147,7 @@ def privacy_exposure_score(results):
     return score, notes
 
 # ===============================
-# Output and Logging (No Change)
+# Output and Logging 
 # ===============================
 
 def print_ip_info(info):
@@ -182,7 +182,7 @@ def log_results(results, summary, consistency_score, privacy_score, privacy_note
         f.write("=" * 60 + "\n")
 
 # ===============================
-# Main Program (MODIFIED)
+# Main Program 
 # ===============================
 
 if __name__ == "__main__":
@@ -241,4 +241,5 @@ if __name__ == "__main__":
         log_results(successful_results, summary, consistency_score, privacy_score, privacy_notes)
         print("\n🗂️ Results saved to digital_footprint_log.txt ✅")
     else:
+
         print("\n🔴 FATAL ERROR: Unable to retrieve data from any API. Analysis aborted.")

@@ -33,4 +33,4 @@ jobs:
     # CRITICAL: This matches the filename you provided (test_analyzer_test.py)
     - name: Run Test Suite
       run: |
-        python -m unittest test_analyzer_test.py
+        python -m unittest ip_analyzer_test

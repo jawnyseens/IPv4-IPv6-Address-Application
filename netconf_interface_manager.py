@@ -6,7 +6,7 @@ import xml.dom.minidom as dom
 import socket  # Used to check for valid IP format
 
 # --- Configuration Variables ---
-# NOTE: The default HOST IP is now defined here.
+# NOTE: The default HOST IP is now defined here
 DEFAULT_HOST = "192.168.1.10"
 PORT = 830             # Standard NETCONF port
 USER = "devnet"

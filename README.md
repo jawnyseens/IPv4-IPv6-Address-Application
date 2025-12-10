@@ -1,4 +1,5 @@
 🕵️ IP Address Analyzer (IP Traceability & Multi-API Lookup)
+
 💡 Overview
 This Python application goes beyond simple IP lookups. It uses three independent public APIs (ipwho.is, ipapi.co, ipinfo.io) to retrieve, cross-verify, and analyze comprehensive IP address metadata (IPv4/IPv6).
 The main goal is to generate a Location Consistency Score and a Privacy Exposure Score, which help detect network anomalies like VPNs, proxies, or inconsistent geolocation reporting.
